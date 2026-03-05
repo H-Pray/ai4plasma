@@ -37,14 +37,14 @@ ai4plasma/
 │   ├── core/                           ← 所有模型共享的核心基础包
 │   │   ├── __init__.py
 │   │   ├── model.py                    ← BaseModel + CfgBaseModel: training loop, checkpoints, TensorBoard
-│   │   └── network.py                  ← Network architectures: FNN, CNN, RelaxLayer, RelaxFNN
+│   │   └── network.py                  ← 网络架构: FNN, CNN, RelaxLayer, RelaxFNN
 │   │
 │   ├── piml/                           ← Physics-Informed Machine Learning methods
 │   │   ├── __init__.py
 │   │   ├── geo.py                      ← Geometry classes: Geo1D, GeoRect2D, GeoPoly2D + boundary samplers
 │   │   ├── pinn.py                     ← Standard PINN: EquationTerm, VisualizationCallback, PINN class
 │   │   ├── cs_pinn.py                  ← CS-PINN: Coefficient-Subnet PINN for plasma arc (steady + transient)
-│   │   ├── rk_pinn.py                  ← RK-PINN: Runge-Kutta time-stepping PINN for corona discharge
+│   │   ├── rk_pinn.py                  ← RK-PINN: 电晕放电的时间步进PINN模型,有耗散
 │   │   ├── meta_pinn.py                ← Meta-PINN: MAML-based fast adaptation across physics tasks
 │   │   └── nas_pinn.py                 ← NAS-PINN: differentiable neural architecture search for PINNs
 │   │
