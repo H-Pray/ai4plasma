@@ -41,22 +41,22 @@ ai4plasma/
 │   │
 │   ├── piml/                           ← Physics-Informed Machine Learning methods
 │   │   ├── __init__.py
-│   │   ├── geo.py                      ← Geometry classes: Geo1D, GeoRect2D, GeoPoly2D + boundary samplers
-│   │   ├── pinn.py                     ← Standard PINN: EquationTerm, VisualizationCallback, PINN class
-│   │   ├── cs_pinn.py                  ← CS-PINN: Coefficient-Subnet PINN for plasma arc (steady + transient)
-│   │   ├── rk_pinn.py                  ← RK-PINN: 电晕放电的时间步进PINN模型,有耗散
-│   │   ├── meta_pinn.py                ← Meta-PINN: MAML-based fast adaptation across physics tasks
-│   │   └── nas_pinn.py                 ← NAS-PINN: differentiable neural architecture search for PINNs
+│   │   ├── geo.py                      ← 几何与采样: Geo1D, GeoRect2D, GeoPoly2D + boundary samplers
+│   │   ├── pinn.py                     ← 标准PINN模块: EquationTerm, VisualizationCallback, PINN class
+│   │   ├── cs_pinn.py                  ← CS-PINN: 系数子网PINN for plasma arc (steady + transient)
+│   │   ├── rk_pinn.py                  ← RK-PINN: 电晕放电场景应用
+│   │   ├── meta_pinn.py                ← Meta-PINN: 模型训练加速
+│   │   └── nas_pinn.py                 ← NAS-PINN: 模型架构搜索
 │   │
 │   ├── operator/                       ← Operator learning (function-to-function mappings)
 │   │   ├── __init__.py
-│   │   ├── deeponet.py                 ← DeepONet: branch + trunk networks, dataset, training wrapper
-│   │   └── deepcsnet.py                ← DeepCSNet: coefficient-subnet operator for cross-section prediction
+│   │   ├── deeponet.py                 ← DeepONet: 算子学习
+│   │   └── deepcsnet.py                ← DeepCSNet: 系数子网算子回归预测碰撞截面
 │   │
 │   ├── plasma/                         ← Plasma physics domain models (FVM-based, no ML)
 │   │   ├── __init__.py
-│   │   ├── arc.py                      ← Arc plasma solvers: StaArc1D, TraArc1DNoV, TraArc1D (FiPy-based)
-│   │   └── prop.py                     ← Plasma property interpolation: ArcPropSpline, CoronaPropSpline
+│   │   ├── arc.py                      ← 传统方法的Arc plasma solvers: StaArc1D, TraArc1DNoV, TraArc1D (FiPy-based)
+│   │   └── prop.py                     ← 插值方法: ArcPropSpline, CoronaPropSpline
 │   │
 │   └── utils/                          ← General-purpose utilities
 │       ├── __init__.py
