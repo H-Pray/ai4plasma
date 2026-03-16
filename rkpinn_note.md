@@ -176,3 +176,74 @@ app/piml/rk_pinn/solve_1d_corona_rk_pinn.py   # 主运行入口脚本
 | `dt` | 1.0 | 归一化时间步长（对应物理时间 $t_\text{red} = 5\ \text{ns}$） |
 | `checkpoint_freq` | 5000 | 每 5000 轮保存一次模型检查点 |
 | `gif_freq` | 1000 | 每 1000 轮保存一帧用于生成 GIF 动画 |
+
+---
+
+## 11. 相关文献
+
+### 奠基性工作
+
+| 文献 | 关键贡献 | 链接 |
+| :--- | :--- | :--- |
+| Raissi et al., *J. Comput. Phys.* 378, 2019 | PINN 原始论文；提出离散时间 PINN + 隐式 RK 方案，证明任意高阶 IRK 可以极低额外成本实现 | [PDF](https://faculty.sites.iastate.edu/hliu/files/inline-files/PINN_RPK_2019_1.pdf) |
+| Zhong, Wu & Wang, *Phys. Fluids* 34(8), 2022 | **本代码直接参考**；提出 CS-PINN（系数子网络）和 RK-PINN 两个框架，专门针对低温等离子体仿真 | [Lab page](http://mathboylinlin.com/project/ai-plasma/) |
+
+### 理论分析与改进（2024–2025）
+
+| 文献 | 关键贡献 | 链接 |
+| :--- | :--- | :--- |
+| Akrivis, Makridakis & Smaragdakis, *Numer. Math.* 157, 2025 | 严格数学分析：证明 RK-PINN 继承底层 RK 格式的稳定性；可用于验证高阶 $q$ 是否真正有益 | [arXiv](https://arxiv.org/html/2412.20575v1), [Springer](https://link.springer.com/article/10.1007/s00211-025-01501-7) |
+| NAS-PINNv2, arXiv:2501.15160, Jan 2025 | 神经架构搜索应用于 CS-PINN 和 RK-PINN；在 Ar 弧等离子体上测试，搜索空间为 5 层、50–500 神经元；**可直接指导网络结构调参** | [arXiv](https://arxiv.org/html/2501.15160v1) |
+| Phase-Space Flows with IRK-PINNs, SCML 2024 | 高阶 IRK-PINN 用于刚性耦合非线性 ODE；利用 A-稳定性处理粒子轨迹和 DAE 问题；**与漂移-扩散方程的刚性问题直接相关** | [PDF](https://scml.jp/2024/paper/26/CameraReady/scml2024.pdf) |
+
+### 其他相关工作
+
+| 文献 | 关键贡献 | 链接 |
+| :--- | :--- | :--- |
+| Zhai, Tao & Bao, *Nonlinear Dyn.* 111, 2023 | RK-PINN 用于非线性动力系统参数估计；将 PINN 单元作为 RK 积分单元的递归网络架构；有开源代码 | [Springer](https://link.springer.com/article/10.1007/s11071-023-08933-6), [GitHub](https://github.com/VVeida/RK4_PINN) |
+| Misyris et al., arXiv:2106.15987, 2021 | 无数据 RK-PINN 用于电力系统时域仿真，比传统求解器快 100 倍 | [arXiv](https://arxiv.org/abs/2106.15987) |
+| Xiao et al., *Eng. Anal. Bound. Elem.*, 2024 | 无网格 RK-PINN 用于结构振动分析；分段训练降低维度；展示时间域分段策略 | [ScienceDirect](https://www.sciencedirect.com/science/article/abs/pii/S0955799724005277) |
+
+---
+
+## 12. 调参建议
+
+### 12.1 损失权重调整
+- 当前实现将 Ne 残差、Phi 残差、Ne 边界残差合并为单一 loss（`_RK_all_residual`），权重均为 1.0
+- **建议**：拆分为独立 loss 项（取消 `rk_pinn.py` 第 580–582 行注释），通过 TensorBoard 分别监控
+- 边界残差通常被欠约束，可尝试 `weight_Ne_b = 10~100`
+- 进阶方案：自适应权重（GradNorm 或 inverse-Dirichlet 方法）
+
+### 12.2 配点采样策略
+- 当前：500 个均匀配点，初始化时一次性采样
+- **建议**：在阴极附近（$r \approx 0$）加密采样（指数或余弦聚类）
+- 每 5000 轮重新采样（residual-based adaptive refinement, RAR）
+
+### 12.3 网络架构
+- 当前：`[1, 300, 300, 300, 300, 602]`，Tanh 激活
+- **建议**：参考 NAS-PINNv2 的搜索结果，尝试更深更窄的网络（如 `[1, 128×6, 602]`）
+- 尝试残差连接（ResNet skip connections）
+- 尝试 Swish 或 GELU 激活函数替代 Tanh
+
+### 12.4 优化器与学习率
+- 当前：Adam `lr=1e-4`，MultiStepLR `milestones=[50000, 100000]`
+- **建议**：初始 `lr=1e-3` + CosineAnnealingLR 替代 MultiStepLR
+- 两阶段训练：Adam（前 50K 轮）→ L-BFGS（精细调整）
+
+### 12.5 时间步长与 RK 阶数
+- 当前：$q=300$, $\Delta t=1.0$（物理时间 5 ns）
+- **建议**：先用低阶（$q=50$ 或 $q=100$）验证物理正确性，再逐步提高
+- 对比策略：高 $q$ + 大 $\Delta t$ vs. 低 $q$ + 小 $\Delta t$ 多步推进
+
+### 12.6 归一化检查
+- 在第 1 轮训练时打印各残差项量级，确认均为 O(1)
+- 若某项远小于其他项，调整对应归一化因子
+
+### 12.7 边界条件注意事项
+- 右边界取 `Ne_r[-2:-1,:]`（倒数第二个点），需确认是否有意为之
+- 可考虑将阴极 Ne BC 从软约束改为硬约束
+
+### 12.8 快速调试配置
+- 快速迭代：`q=10`, `train_data_size=100`, `num_epochs=5000`
+- 绘制残差空间分布（residual vs. $r$）定位网络薄弱区域
+- 监控各 loss 项的梯度范数，检测梯度消失/爆炸
