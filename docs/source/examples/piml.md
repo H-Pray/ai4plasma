@@ -553,6 +553,72 @@ python app/piml/rk_pinn/solve_1d_corona_rk_pinn.py
 
 ---
 
+## SRKPINN (Symplectic RK-PINN)
+
+### Theory
+
+SRKPINN specializes RK-PINN for **canonical Hamiltonian systems**. The key change is that the embedded Runge-Kutta scheme is restricted to a **symplectic implicit RK tableau**, so the learned one-step map inherits the structure-preserving properties of the integrator.
+
+For
+
+$$
+\dot q = \nabla_p H(q, p), \qquad \dot p = -\nabla_q H(q, p),
+$$
+
+the stage equations are enforced inside the PINN loss while the Butcher coefficients satisfy
+
+$$
+b_i a_{ij} + b_j a_{ji} - b_i b_j = 0.
+$$
+
+**Why this matters**:
+- Better long-horizon phase-space behavior
+- Reduced energy drift compared with generic RK discretizations
+- Clear separation between Hamiltonian structure and neural approximation error
+
+### Example: Nonlinear Pendulum
+
+**File**: `app/piml/SRKPINN/solve_pendulum_srkpinn.py`
+
+**Hamiltonian**:
+
+$$
+H(q, p) = \frac{1}{2} p^2 + \omega_0^2 (1 - \cos q)
+$$
+
+**Model Setup**:
+- System: nonlinear pendulum
+- Time step: $\Delta t = 0.1$
+- RK method: 2-stage Gauss-Legendre
+- Training data: one-step state pairs generated from a high-accuracy reference solver
+
+**Network Architecture**:
+```python
+stages = 2
+layers = [2, 128, 128, 128, 2 * (stages + 1)]
+backbone_net = FNN(layers=layers, act_fun=nn.Tanh())
+```
+
+**Loss Terms**:
+- `StageDynamics`: symplectic stage equations
+- `StepClosure`: RK step-end closure equations
+- `InitialOrData`: supervised one-step map residual
+
+**Run**:
+```bash
+python app/piml/SRKPINN/solve_pendulum_srkpinn.py
+```
+
+**Expected Output**:
+- Phase portrait comparison between SRKPINN and reference rollout
+- State rollout plots for $(q, p)$
+- Energy-drift diagnostics
+- Training loss curves
+
+Artifacts are saved in `app/piml/SRKPINN/results/pendulum/`.
+
+---
+
 ## Meta-PINN
 
 ### Theory

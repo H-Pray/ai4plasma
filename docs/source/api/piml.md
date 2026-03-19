@@ -38,6 +38,51 @@ This module implements Physics-Informed Neural Networks (PINNs) and their varian
    :show-inheritance:
 ```
 
+## SRKPINN Tableaus
+
+```{eval-rst}
+.. automodule:: SRKPINN.tableau
+   :members:
+   :undoc-members:
+   :show-inheritance:
+```
+
+## SRKPINN Systems
+
+```{eval-rst}
+.. automodule:: SRKPINN.systems
+   :members:
+   :undoc-members:
+   :show-inheritance:
+```
+
+## SRKPINN Networks
+
+```{eval-rst}
+.. automodule:: SRKPINN.networks
+   :members:
+   :undoc-members:
+   :show-inheritance:
+```
+
+## SRKPINN Models
+
+```{eval-rst}
+.. automodule:: SRKPINN.model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+```
+
+## SRKPINN Callbacks
+
+```{eval-rst}
+.. automodule:: SRKPINN.callbacks
+   :members:
+   :undoc-members:
+   :show-inheritance:
+```
+
 ## Meta-PINN (Meta-Learning PINN)
 
 ```{eval-rst}

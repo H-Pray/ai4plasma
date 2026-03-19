@@ -242,6 +242,10 @@ print(f"Relative L2 error: {l2_err:.4e}")
 - **`rk_pinn.py`**: Runge-Kutta PINNs (RK-PINN) for temporal problems
 - **`nas_pinn.py`**: Neural Architecture Search for PINNs (NAS-PINN)
 
+### Structure-Preserving Extensions
+
+- **`SRKPINN/`**: Symplectic RK-PINNs for Hamiltonian systems and long-horizon dynamics
+
 ### Operator Learning (`ai4plasma.operator`)
 
 - **`deeponet.py`**: Deep Operator Networks implementation
@@ -285,6 +289,7 @@ The `app/` directory contains numerous ready-to-run examples:
 - **Transient Arc (with radial velocity) by CS-PINN**: [`app/piml/cs_pinn/solve_1d_arc_transient_cs_pinn.py`](app/piml/cs_pinn/solve_1d_arc_transient_cs_pinn.py)
 - **Transient Arc (without radial velocity) by CS-PINN**: [`app/piml/cs_pinn/solve_1d_arc_transient_noV_cs_pinn.py`](app/piml/cs_pinn/solve_1d_arc_transient_noV_cs_pinn.py)
 - **Corona Discharge by RK-PINN**: [`app/piml/rk_pinn/solve_1d_corona_rk_pinn.py`](app/piml/rk_pinn/solve_1d_corona_rk_pinn.py)
+- **Nonlinear Pendulum by SRKPINN**: [`app/piml/SRKPINN/solve_pendulum_srkpinn.py`](app/piml/SRKPINN/solve_pendulum_srkpinn.py)
 - **Resume Training**: [`app/piml/cs_pinn/resume_1d_arc_transient_cs_pinn.py`](app/piml/cs_pinn/resume_1d_arc_transient_cs_pinn.py)
 
 ### Operator Learning
@@ -308,6 +313,7 @@ ai4plasma/
 │   ├── operator/          # Operator learning methods
 │   ├── plasma/            # Plasma physics models
 │   └── utils/             # Utility functions
+├── SRKPINN/               # Symplectic RK-PINN package for Hamiltonian systems
 ├── app/                   # Example applications
 │   ├── piml/              # PIML examples
 │   ├── operator/          # Operator learning examples
