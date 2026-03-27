@@ -25,3 +25,8 @@ app/operator/deeponet/results*
 app/operator/deepcsnet/models*
 app/operator/deepcsnet/runs*
 app/operator/deepcsnet/results*
+
+# Local workspace artifacts
+.claude/
+.codex-tmp/
+Zhong et al. - 2022 - Low-temperature plasma simulation based on physics-informed neural networks Frameworks and prelimin.pdf
