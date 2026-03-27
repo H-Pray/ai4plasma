@@ -595,14 +595,15 @@ $$
 **Network Architecture**:
 ```python
 stages = 2
-layers = [2, 128, 128, 128, 2 * (stages + 1)]
+layers = [2, 128, 128, 128, 2 * stages]
 backbone_net = FNN(layers=layers, act_fun=nn.Tanh())
 ```
 
 **Loss Terms**:
 - `StageDynamics`: symplectic stage equations
-- `StepClosure`: RK step-end closure equations
-- `InitialOrData`: supervised one-step map residual
+- `InitialOrData`: supervised residual on the step-end state derived from the RK closure
+
+Unlike the first SRKPINN draft, the step-end state is not predicted directly. It is reconstructed from the RK stages with the symplectic closure formula, which makes the learned map much closer to a true structure-preserving discretization.
 
 **Run**:
 ```bash
@@ -613,6 +614,7 @@ python app/piml/SRKPINN/solve_pendulum_srkpinn.py
 - Phase portrait comparison between SRKPINN and reference rollout
 - State rollout plots for $(q, p)$
 - Energy-drift diagnostics
+- Local symplectic-map residual diagnostic
 - Training loss curves
 
 Artifacts are saved in `app/piml/SRKPINN/results/pendulum/`.

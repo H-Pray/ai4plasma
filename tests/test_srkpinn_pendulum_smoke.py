@@ -28,7 +28,7 @@ class TestHamiltonianSRKPINNSmoke(unittest.TestCase):
         )
         next_states = current_states.copy()
 
-        backbone = FNN(layers=[2, 24, 24, 6], act_fun=nn.Tanh())
+        backbone = FNN(layers=[2, 24, 24, 4], act_fun=nn.Tanh())
         model = HamiltonianSRKPINN(
             system=PendulumSystem(),
             dt=0.1,
@@ -39,7 +39,7 @@ class TestHamiltonianSRKPINNSmoke(unittest.TestCase):
         )
 
         total_loss, loss_dict = model.calc_loss()
-        self.assertEqual(set(loss_dict.keys()), {"StageDynamics", "StepClosure", "InitialOrData"})
+        self.assertEqual(set(loss_dict.keys()), {"StageDynamics", "InitialOrData"})
         self.assertTrue(torch.isfinite(total_loss))
 
         total_loss.backward()
@@ -51,6 +51,8 @@ class TestHamiltonianSRKPINNSmoke(unittest.TestCase):
 
         pred = model.predict_step(current_states[0])
         self.assertEqual(pred.shape, (2,))
+        symplectic_residual = model.symplectic_map_residual(current_states[0])
+        self.assertEqual(symplectic_residual.shape, (2, 2))
 
 
 if __name__ == "__main__":

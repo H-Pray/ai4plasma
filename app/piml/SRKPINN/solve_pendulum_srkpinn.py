@@ -51,7 +51,7 @@ num_epochs = 6000
 learning_rate = 1e-3
 train_data_size = 512
 
-layers = [system.state_dim, 128, 128, 128, system.state_dim * (stages + 1)]
+layers = [system.state_dim, 128, 128, 128, system.state_dim * stages]
 backbone_net = FNN(layers=layers, act_fun=nn.Tanh())
 
 model = HamiltonianSRKPINN(
@@ -64,8 +64,7 @@ model = HamiltonianSRKPINN(
     sample_mode="uniform",
     loss_weights={
         "StageDynamics": 1.0,
-        "StepClosure": 1.0,
-        "InitialOrData": 1.0,
+        "InitialOrData": 2.0,
     },
 )
 

@@ -35,6 +35,7 @@ class SRKPINNVisCallback(VisualizationCallback):
             "losses": [],
             "energy_drift": [],
             "state_error": [],
+            "symplectic_error": [],
         }
 
     def _compute_rollout_metrics(self):
@@ -49,12 +50,15 @@ class SRKPINNVisCallback(VisualizationCallback):
         pred_energy_drift = compute_energy_drift(self.model.system, pred_traj)
         ref_energy_drift = compute_energy_drift(self.model.system, ref_traj)
         state_error = np.linalg.norm(pred_traj - ref_traj, axis=1)
+        symplectic_residual = self.model.symplectic_map_residual(self.initial_state)
+        symplectic_error = float(np.max(np.abs(symplectic_residual)))
         return {
             "pred_traj": pred_traj,
             "ref_traj": ref_traj,
             "pred_energy_drift": pred_energy_drift,
             "ref_energy_drift": ref_energy_drift,
             "state_error": state_error,
+            "symplectic_error": symplectic_error,
         }
 
     def _make_figure(self, epoch: int, metrics: dict, total_loss=None):
@@ -69,6 +73,14 @@ class SRKPINNVisCallback(VisualizationCallback):
         ax_phase.set_title("Phase Portrait")
         ax_phase.grid(True, alpha=0.3)
         ax_phase.legend(loc="best")
+        ax_phase.text(
+            0.03,
+            0.05,
+            f"Map sympl. err: {metrics['symplectic_error']:.2e}",
+            transform=ax_phase.transAxes,
+            va="bottom",
+            bbox=dict(boxstyle="round", facecolor="white", alpha=0.85),
+        )
 
         ax_state = axes[0, 1]
         ax_state.plot(steps, metrics["ref_traj"][:, 0], "k--", linewidth=2, label="q ref")
@@ -143,6 +155,7 @@ class SRKPINNVisCallback(VisualizationCallback):
                 self.history["losses"].append(np.nan)
             self.history["energy_drift"].append(float(metrics["pred_energy_drift"][-1]))
             self.history["state_error"].append(float(metrics["state_error"][-1]))
+            self.history["symplectic_error"].append(float(metrics["symplectic_error"]))
 
         fig = self._make_figure(epoch, metrics, total_loss=total_loss)
         return {"pendulum_rollout": fig}

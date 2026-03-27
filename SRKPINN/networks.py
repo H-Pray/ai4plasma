@@ -14,12 +14,14 @@ class SRKStepOutput:
 
     q_stages: torch.Tensor
     p_stages: torch.Tensor
-    q_next: torch.Tensor
-    p_next: torch.Tensor
+    q_next: torch.Tensor | None = None
+    p_next: torch.Tensor | None = None
 
     @property
     def next_state(self) -> torch.Tensor:
         """Return the concatenated step-end state."""
+        if self.q_next is None or self.p_next is None:
+            raise ValueError("Step-end state has not been constructed for this SRKStepOutput.")
         return torch.cat((self.q_next, self.p_next), dim=-1)
 
     @property
@@ -51,10 +53,10 @@ class HamiltonianSRKNet(nn.Module):
         self.state_dim = int(state_dim)
         self.stages = int(stages)
         self.dim_q = self.state_dim // 2
-        self.output_dim = self.state_dim * (self.stages + 1)
+        self.output_dim = self.state_dim * self.stages
 
     def forward(self, state: torch.Tensor) -> SRKStepOutput:
-        """Return stage states and the predicted next state."""
+        """Return stage states. The step-end state is built by the model."""
         raw = self.network(state)
         if raw.shape[-1] != self.output_dim:
             raise ValueError(
@@ -64,13 +66,8 @@ class HamiltonianSRKNet(nn.Module):
         stage_width = self.stages * self.dim_q
         q_stage_flat = raw[:, :stage_width]
         p_stage_flat = raw[:, stage_width : 2 * stage_width]
-        next_width_start = 2 * stage_width
-        q_next = raw[:, next_width_start : next_width_start + self.dim_q]
-        p_next = raw[:, next_width_start + self.dim_q : next_width_start + 2 * self.dim_q]
 
         return SRKStepOutput(
             q_stages=q_stage_flat.reshape(-1, self.stages, self.dim_q),
             p_stages=p_stage_flat.reshape(-1, self.stages, self.dim_q),
-            q_next=q_next,
-            p_next=p_next,
         )
