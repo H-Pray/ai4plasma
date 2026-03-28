@@ -1,0 +1,512 @@
+{
+  "dt": 0.2,
+  "stages": 3,
+  "method": "gauss-legendre",
+  "eval_total_time": 20.0,
+  "train_data_sizes": [
+    128,
+    512,
+    1024,
+    2048
+  ],
+  "sample_modes": [
+    "uniform",
+    "random"
+  ],
+  "ranking_rule": [
+    "rollout_state_error_final",
+    "max_energy_drift",
+    "train_one_step_rmse"
+  ],
+  "best_run": "data_T20_size_512_uniform",
+  "rows": [
+    {
+      "run_name": "data_T20_size_128_uniform",
+      "status": "completed",
+      "train_data_size": 128,
+      "sample_mode": "uniform",
+      "config": {
+        "run_name": "data_T20_size_128_uniform",
+        "seed": 2026,
+        "device": "cpu",
+        "dt": 0.2,
+        "stages": 3,
+        "method": "gauss-legendre",
+        "num_epochs": 6000,
+        "learning_rate": 0.001,
+        "train_data_size": 128,
+        "sample_mode": "uniform",
+        "loss_weights": {
+          "StageDynamics": 1.0,
+          "InitialOrData": 2.0
+        },
+        "layers": [
+          2,
+          128,
+          128,
+          128,
+          6
+        ],
+        "activation": "Tanh",
+        "monitor_state": [
+          1.7,
+          0.0
+        ],
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "requested_rollout_total_time": 20.0,
+        "log_freq": 100,
+        "history_freq": 100,
+        "checkpoint_freq": 1000,
+        "scheduler_name": "MultiStepLR",
+        "scheduler_milestones": [
+          2000,
+          4000
+        ],
+        "scheduler_gamma": 0.5,
+        "results_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_128_uniform/results",
+        "log_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_128_uniform/runs",
+        "checkpoint_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_128_uniform/models"
+      },
+      "summary": {
+        "train_one_step_rmse": 0.0005246736109256744,
+        "monitored_one_step_l2": 0.00013315757678356022,
+        "rollout_state_error_final": 0.01580316200852394,
+        "max_rollout_state_error": 0.01580316200852394,
+        "energy_drift_final": 0.005020856857299805,
+        "max_energy_drift": 0.0060569047927856445,
+        "symplectic_error": 0.00012135505676269531,
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "training_time_sec": 19.273266
+      }
+    },
+    {
+      "run_name": "data_T20_size_512_uniform",
+      "status": "completed",
+      "train_data_size": 512,
+      "sample_mode": "uniform",
+      "config": {
+        "run_name": "data_T20_size_512_uniform",
+        "seed": 2026,
+        "device": "cpu",
+        "dt": 0.2,
+        "stages": 3,
+        "method": "gauss-legendre",
+        "num_epochs": 6000,
+        "learning_rate": 0.001,
+        "train_data_size": 512,
+        "sample_mode": "uniform",
+        "loss_weights": {
+          "StageDynamics": 1.0,
+          "InitialOrData": 2.0
+        },
+        "layers": [
+          2,
+          128,
+          128,
+          128,
+          6
+        ],
+        "activation": "Tanh",
+        "monitor_state": [
+          1.7,
+          0.0
+        ],
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "requested_rollout_total_time": 20.0,
+        "log_freq": 100,
+        "history_freq": 100,
+        "checkpoint_freq": 1000,
+        "scheduler_name": "MultiStepLR",
+        "scheduler_milestones": [
+          2000,
+          4000
+        ],
+        "scheduler_gamma": 0.5,
+        "results_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_512_uniform/results",
+        "log_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_512_uniform/runs",
+        "checkpoint_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_512_uniform/models"
+      },
+      "summary": {
+        "train_one_step_rmse": 0.0005028847954235971,
+        "monitored_one_step_l2": 0.00011511964112287387,
+        "rollout_state_error_final": 0.0022144699469208717,
+        "max_rollout_state_error": 0.004014833830296993,
+        "energy_drift_final": 0.0024095773696899414,
+        "max_energy_drift": 0.0038673877716064453,
+        "symplectic_error": 4.6253204345703125e-05,
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "training_time_sec": 22.434722
+      }
+    },
+    {
+      "run_name": "data_T20_size_1024_uniform",
+      "status": "completed",
+      "train_data_size": 1024,
+      "sample_mode": "uniform",
+      "config": {
+        "run_name": "data_T20_size_1024_uniform",
+        "seed": 2026,
+        "device": "cpu",
+        "dt": 0.2,
+        "stages": 3,
+        "method": "gauss-legendre",
+        "num_epochs": 6000,
+        "learning_rate": 0.001,
+        "train_data_size": 1024,
+        "sample_mode": "uniform",
+        "loss_weights": {
+          "StageDynamics": 1.0,
+          "InitialOrData": 2.0
+        },
+        "layers": [
+          2,
+          128,
+          128,
+          128,
+          6
+        ],
+        "activation": "Tanh",
+        "monitor_state": [
+          1.7,
+          0.0
+        ],
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "requested_rollout_total_time": 20.0,
+        "log_freq": 100,
+        "history_freq": 100,
+        "checkpoint_freq": 1000,
+        "scheduler_name": "MultiStepLR",
+        "scheduler_milestones": [
+          2000,
+          4000
+        ],
+        "scheduler_gamma": 0.5,
+        "results_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_1024_uniform/results",
+        "log_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_1024_uniform/runs",
+        "checkpoint_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_1024_uniform/models"
+      },
+      "summary": {
+        "train_one_step_rmse": 0.0002633082331158221,
+        "monitored_one_step_l2": 0.00014958881365600973,
+        "rollout_state_error_final": 0.024076025933027267,
+        "max_rollout_state_error": 0.024076025933027267,
+        "energy_drift_final": 0.0062656402587890625,
+        "max_energy_drift": 0.0062656402587890625,
+        "symplectic_error": 3.892183303833008e-05,
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "training_time_sec": 27.294534
+      }
+    },
+    {
+      "run_name": "data_T20_size_2048_uniform",
+      "status": "completed",
+      "train_data_size": 2048,
+      "sample_mode": "uniform",
+      "config": {
+        "run_name": "data_T20_size_2048_uniform",
+        "seed": 2026,
+        "device": "cpu",
+        "dt": 0.2,
+        "stages": 3,
+        "method": "gauss-legendre",
+        "num_epochs": 6000,
+        "learning_rate": 0.001,
+        "train_data_size": 2048,
+        "sample_mode": "uniform",
+        "loss_weights": {
+          "StageDynamics": 1.0,
+          "InitialOrData": 2.0
+        },
+        "layers": [
+          2,
+          128,
+          128,
+          128,
+          6
+        ],
+        "activation": "Tanh",
+        "monitor_state": [
+          1.7,
+          0.0
+        ],
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "requested_rollout_total_time": 20.0,
+        "log_freq": 100,
+        "history_freq": 100,
+        "checkpoint_freq": 1000,
+        "scheduler_name": "MultiStepLR",
+        "scheduler_milestones": [
+          2000,
+          4000
+        ],
+        "scheduler_gamma": 0.5,
+        "results_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_2048_uniform/results",
+        "log_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_2048_uniform/runs",
+        "checkpoint_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_2048_uniform/models"
+      },
+      "summary": {
+        "train_one_step_rmse": 0.0007981695816852152,
+        "monitored_one_step_l2": 0.000876102305483073,
+        "rollout_state_error_final": 0.27940934896469116,
+        "max_rollout_state_error": 0.27940934896469116,
+        "energy_drift_final": 0.06925547122955322,
+        "max_energy_drift": 0.06925547122955322,
+        "symplectic_error": 0.00024008750915527344,
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "training_time_sec": 36.495651
+      }
+    },
+    {
+      "run_name": "data_T20_size_128_random",
+      "status": "completed",
+      "train_data_size": 128,
+      "sample_mode": "random",
+      "config": {
+        "run_name": "data_T20_size_128_random",
+        "seed": 2026,
+        "device": "cpu",
+        "dt": 0.2,
+        "stages": 3,
+        "method": "gauss-legendre",
+        "num_epochs": 6000,
+        "learning_rate": 0.001,
+        "train_data_size": 128,
+        "sample_mode": "random",
+        "loss_weights": {
+          "StageDynamics": 1.0,
+          "InitialOrData": 2.0
+        },
+        "layers": [
+          2,
+          128,
+          128,
+          128,
+          6
+        ],
+        "activation": "Tanh",
+        "monitor_state": [
+          1.7,
+          0.0
+        ],
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "requested_rollout_total_time": 20.0,
+        "log_freq": 100,
+        "history_freq": 100,
+        "checkpoint_freq": 1000,
+        "scheduler_name": "MultiStepLR",
+        "scheduler_milestones": [
+          2000,
+          4000
+        ],
+        "scheduler_gamma": 0.5,
+        "results_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_128_random/results",
+        "log_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_128_random/runs",
+        "checkpoint_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_128_random/models"
+      },
+      "summary": {
+        "train_one_step_rmse": 0.0005158093990758061,
+        "monitored_one_step_l2": 0.00030906571191735566,
+        "rollout_state_error_final": 0.027656542137265205,
+        "max_rollout_state_error": 0.027656542137265205,
+        "energy_drift_final": 0.0061914920806884766,
+        "max_energy_drift": 0.0061914920806884766,
+        "symplectic_error": 0.0003324151039123535,
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "training_time_sec": 19.773377
+      }
+    },
+    {
+      "run_name": "data_T20_size_512_random",
+      "status": "completed",
+      "train_data_size": 512,
+      "sample_mode": "random",
+      "config": {
+        "run_name": "data_T20_size_512_random",
+        "seed": 2026,
+        "device": "cpu",
+        "dt": 0.2,
+        "stages": 3,
+        "method": "gauss-legendre",
+        "num_epochs": 6000,
+        "learning_rate": 0.001,
+        "train_data_size": 512,
+        "sample_mode": "random",
+        "loss_weights": {
+          "StageDynamics": 1.0,
+          "InitialOrData": 2.0
+        },
+        "layers": [
+          2,
+          128,
+          128,
+          128,
+          6
+        ],
+        "activation": "Tanh",
+        "monitor_state": [
+          1.7,
+          0.0
+        ],
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "requested_rollout_total_time": 20.0,
+        "log_freq": 100,
+        "history_freq": 100,
+        "checkpoint_freq": 1000,
+        "scheduler_name": "MultiStepLR",
+        "scheduler_milestones": [
+          2000,
+          4000
+        ],
+        "scheduler_gamma": 0.5,
+        "results_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_512_random/results",
+        "log_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_512_random/runs",
+        "checkpoint_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_512_random/models"
+      },
+      "summary": {
+        "train_one_step_rmse": 0.000571489508729428,
+        "monitored_one_step_l2": 0.00014914431085344404,
+        "rollout_state_error_final": 0.014841999858617783,
+        "max_rollout_state_error": 0.014841999858617783,
+        "energy_drift_final": 0.0013964176177978516,
+        "max_energy_drift": 0.0017428398132324219,
+        "symplectic_error": 0.00015437602996826172,
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "training_time_sec": 22.705566
+      }
+    },
+    {
+      "run_name": "data_T20_size_1024_random",
+      "status": "completed",
+      "train_data_size": 1024,
+      "sample_mode": "random",
+      "config": {
+        "run_name": "data_T20_size_1024_random",
+        "seed": 2026,
+        "device": "cpu",
+        "dt": 0.2,
+        "stages": 3,
+        "method": "gauss-legendre",
+        "num_epochs": 6000,
+        "learning_rate": 0.001,
+        "train_data_size": 1024,
+        "sample_mode": "random",
+        "loss_weights": {
+          "StageDynamics": 1.0,
+          "InitialOrData": 2.0
+        },
+        "layers": [
+          2,
+          128,
+          128,
+          128,
+          6
+        ],
+        "activation": "Tanh",
+        "monitor_state": [
+          1.7,
+          0.0
+        ],
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "requested_rollout_total_time": 20.0,
+        "log_freq": 100,
+        "history_freq": 100,
+        "checkpoint_freq": 1000,
+        "scheduler_name": "MultiStepLR",
+        "scheduler_milestones": [
+          2000,
+          4000
+        ],
+        "scheduler_gamma": 0.5,
+        "results_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_1024_random/results",
+        "log_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_1024_random/runs",
+        "checkpoint_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_1024_random/models"
+      },
+      "summary": {
+        "train_one_step_rmse": 0.0005235816352069378,
+        "monitored_one_step_l2": 0.00011749247642001137,
+        "rollout_state_error_final": 0.033003415912389755,
+        "max_rollout_state_error": 0.033003415912389755,
+        "energy_drift_final": 0.0066869258880615234,
+        "max_energy_drift": 0.0066869258880615234,
+        "symplectic_error": 0.00017750263214111328,
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "training_time_sec": 27.899794
+      }
+    },
+    {
+      "run_name": "data_T20_size_2048_random",
+      "status": "completed",
+      "train_data_size": 2048,
+      "sample_mode": "random",
+      "config": {
+        "run_name": "data_T20_size_2048_random",
+        "seed": 2026,
+        "device": "cpu",
+        "dt": 0.2,
+        "stages": 3,
+        "method": "gauss-legendre",
+        "num_epochs": 6000,
+        "learning_rate": 0.001,
+        "train_data_size": 2048,
+        "sample_mode": "random",
+        "loss_weights": {
+          "StageDynamics": 1.0,
+          "InitialOrData": 2.0
+        },
+        "layers": [
+          2,
+          128,
+          128,
+          128,
+          6
+        ],
+        "activation": "Tanh",
+        "monitor_state": [
+          1.7,
+          0.0
+        ],
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "requested_rollout_total_time": 20.0,
+        "log_freq": 100,
+        "history_freq": 100,
+        "checkpoint_freq": 1000,
+        "scheduler_name": "MultiStepLR",
+        "scheduler_milestones": [
+          2000,
+          4000
+        ],
+        "scheduler_gamma": 0.5,
+        "results_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_2048_random/results",
+        "log_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_2048_random/runs",
+        "checkpoint_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/data_coverage/data_T20_size_2048_random/models"
+      },
+      "summary": {
+        "train_one_step_rmse": 0.001112499157898128,
+        "monitored_one_step_l2": 0.00013818642764817923,
+        "rollout_state_error_final": 0.2030559927225113,
+        "max_rollout_state_error": 0.2030559927225113,
+        "energy_drift_final": 0.05871272087097168,
+        "max_energy_drift": 0.05871272087097168,
+        "symplectic_error": 0.0006459355354309082,
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "training_time_sec": 42.336372
+      }
+    }
+  ]
+}
