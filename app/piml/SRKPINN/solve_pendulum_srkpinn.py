@@ -13,16 +13,13 @@ import torch.nn as nn
 from ai4plasma.config import DEVICE, REAL
 from ai4plasma.core.network import FNN
 from ai4plasma.utils.common import Timer, set_seed
-from ai4plasma.utils.device import check_gpu
+from ai4plasma.utils.device import select_best_device
 from SRKPINN import HamiltonianSRKPINN, PendulumSystem, SRKPINNVisCallback
 
 
 set_seed(2026)
 
-if check_gpu(print_required=True):
-    DEVICE.set_device(0)
-else:
-    DEVICE.set_device(-1)
+DEVICE.set_device(select_best_device(print_required=True))
 print(DEVICE)
 
 timer = Timer()

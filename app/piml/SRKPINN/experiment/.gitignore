@@ -1,3 +1,8 @@
+__pycache__/
 baseline/__pycache__/
+.mplconfig/
 baseline/.mplconfig/
 baseline/*/
+data_coverage/*/
+loss_balancing/*/
+time_discretization/*/

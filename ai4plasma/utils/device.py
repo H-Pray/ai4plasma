@@ -17,6 +17,20 @@ Device Classes
 
 import torch
 
+
+def check_mps(print_required=False):
+    """Check if Apple Metal Performance Shaders (MPS) is available."""
+    mps_backend = getattr(torch.backends, "mps", None)
+    has_mps = bool(mps_backend is not None and mps_backend.is_available())
+
+    if print_required:
+        if has_mps:
+            print("MPS is available!")
+        else:
+            print("MPS is not available!")
+
+    return has_mps
+
 def check_gpu(print_required=False):
     """Check if GPU is available.
     
@@ -42,6 +56,20 @@ def check_gpu(print_required=False):
             print('GPU is not available!')
 
     return has_gpu
+
+
+def select_best_device(print_required=False):
+    """Select the best available accelerator with CUDA > MPS > CPU priority."""
+    if check_gpu(print_required=print_required):
+        return 0
+
+    if check_mps(print_required=print_required):
+        return "mps"
+
+    if print_required:
+        print("Falling back to CPU.")
+
+    return -1
 
 
 def select_gpu_by_id(gpu_id=0):
@@ -101,8 +129,30 @@ def torch_device(device_id=-1):
         If device_id is not an integer, if a GPU device_id is specified but GPU
         is not available, or if device_id exceeds the number of available GPUs.
     """
+    if isinstance(device_id, torch.device):
+        return device_id
+
+    if isinstance(device_id, str):
+        normalized = device_id.strip().lower()
+        if normalized == "cpu":
+            return torch.device("cpu")
+        if normalized == "mps":
+            if not check_mps():
+                raise ValueError("MPS is not available, but device_id='mps' was specified.")
+            return torch.device("mps")
+        if normalized.startswith("cuda"):
+            if not torch.cuda.is_available():
+                raise ValueError("CUDA is not available, but a CUDA device was specified.")
+            cuda_device = torch.device(normalized)
+            if cuda_device.index is not None and cuda_device.index >= torch.cuda.device_count():
+                raise ValueError(
+                    f"Invalid CUDA device '{device_id}'. Only {torch.cuda.device_count()} GPUs are available."
+                )
+            return cuda_device
+        raise ValueError(f"Unsupported device_id '{device_id}'.")
+
     if not isinstance(device_id, int):
-        raise ValueError("device_id must be an integer.")
+        raise ValueError("device_id must be an integer, string, or torch.device.")
     
     if device_id >= 0:
         if not torch.cuda.is_available():
@@ -185,10 +235,11 @@ class Device:
             String representation in format 'Device(cpu)' for CPU or
             'Device(cuda:{device_id})' for GPU.
         """
-        if self.device_id < 0:
+        if isinstance(self.device_id, int) and self.device_id < 0:
             return "Device(cpu)"
-        else:
+        if isinstance(self.device_id, int):
             return f"Device(cuda:{self.device_id})"
+        return f"Device({self.device})"
 
     def set_device(self, device_id=-1) -> None:
         """Set the device based on provided device ID.
@@ -209,7 +260,9 @@ class Device:
             is not available.
         """
         self.device = torch_device(device_id)
-        self.device_id = device_id
-
+        if isinstance(device_id, torch.device):
+            self.device_id = str(device_id)
+        else:
+            self.device_id = device_id
 
 
