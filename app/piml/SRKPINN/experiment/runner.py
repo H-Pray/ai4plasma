@@ -25,6 +25,14 @@ def write_json(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def normalize_scheduler_name(name: str | None) -> str:
+    if name is None:
+        return ""
+
+    normalized = str(name).strip()
+    return "" if normalized.lower() in {"", "none"} else normalized
+
+
 def default_method_for_stages(stages: int) -> str:
     return "implicit-midpoint" if int(stages) == 1 else "gauss-legendre"
 
@@ -147,6 +155,7 @@ def run_pendulum_experiment(
     monitor_state = [1.7, 0.0] if monitor_state is None else list(monitor_state)
     history_freq = log_freq if history_freq is None else history_freq
     scheduler_milestones = [2000, 4000] if scheduler_milestones is None else list(scheduler_milestones)
+    scheduler_name = normalize_scheduler_name(scheduler_name)
     num_rollout_steps, effective_rollout_total_time = resolve_rollout_steps(
         dt=dt,
         num_rollout_steps=num_rollout_steps,
@@ -209,7 +218,7 @@ def run_pendulum_experiment(
         "log_freq": int(log_freq),
         "history_freq": int(history_freq),
         "checkpoint_freq": int(checkpoint_freq),
-        "scheduler_name": scheduler_name,
+        "scheduler_name": scheduler_name or "none",
         "scheduler_milestones": scheduler_milestones,
         "scheduler_gamma": float(scheduler_gamma),
         "results_dir": str(results_dir),

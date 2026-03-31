@@ -6,3 +6,15 @@ baseline/*/
 data_coverage/*/
 loss_balancing/*/
 time_discretization/*/
+optimization/*/
+network_capacity/*/
+optimization/aggregate_summary_fixed_time_T20_smoke.json
+optimization/aggregate_summary_fixed_time_T20_smoke.md
+optimization/comparison_metrics_fixed_time_T20_smoke.png
+optimization/comparison_panels_fixed_time_T20_smoke.png
+/optimization/aggregate_summary_fixed_time_T20_smoke.json
+/optimization/aggregate_summary_fixed_time_T20_smoke.md
+/optimization/comparison_metrics_fixed_time_T20_smoke.png
+/optimization/comparison_panels_fixed_time_T20_smoke.png
+/optimization/aggregate_summary_fixed_time_T20_nosched_smoke.json
+/optimization/aggregate_summary_fixed_time_T20_nosched_smoke.md
