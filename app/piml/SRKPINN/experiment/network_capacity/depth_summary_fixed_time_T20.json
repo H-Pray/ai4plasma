@@ -1,0 +1,250 @@
+{
+  "seed": 2026,
+  "dt": 0.2,
+  "stages": 3,
+  "method": "gauss-legendre",
+  "train_data_size": 512,
+  "sample_mode": "uniform",
+  "loss_weights": {
+    "StageDynamics": 1.0,
+    "InitialOrData": 2.0
+  },
+  "learning_rate": 0.001,
+  "num_epochs": 6000,
+  "scheduler_name": "MultiStepLR",
+  "scheduler_milestones": [
+    2000,
+    4000
+  ],
+  "scheduler_gamma": 0.5,
+  "hidden_width": 128,
+  "activation": "Tanh",
+  "depths": [
+    3,
+    4,
+    5
+  ],
+  "eval_total_time": 20.0,
+  "run_tag": "",
+  "ranking_rule": [
+    "rollout_state_error_final",
+    "max_energy_drift",
+    "train_one_step_rmse"
+  ],
+  "best_run": "depth_T20_lr_1em03_ep_6000_w_128_d_3_tanh",
+  "rows": [
+    {
+      "run_name": "depth_T20_lr_1em03_ep_6000_w_128_d_3_tanh",
+      "status": "completed",
+      "hidden_width": 128,
+      "hidden_depth": 3,
+      "activation": "Tanh",
+      "layers": [
+        2,
+        128,
+        128,
+        128,
+        6
+      ],
+      "config": {
+        "run_name": "depth_T20_lr_1em03_ep_6000_w_128_d_3_tanh",
+        "seed": 2026,
+        "device": "cpu",
+        "dt": 0.2,
+        "stages": 3,
+        "method": "gauss-legendre",
+        "num_epochs": 6000,
+        "learning_rate": 0.001,
+        "train_data_size": 512,
+        "sample_mode": "uniform",
+        "loss_weights": {
+          "StageDynamics": 1.0,
+          "InitialOrData": 2.0
+        },
+        "layers": [
+          2,
+          128,
+          128,
+          128,
+          6
+        ],
+        "activation": "Tanh",
+        "monitor_state": [
+          1.7,
+          0.0
+        ],
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "requested_rollout_total_time": 20.0,
+        "log_freq": 100,
+        "history_freq": 100,
+        "checkpoint_freq": 1000,
+        "scheduler_name": "MultiStepLR",
+        "scheduler_milestones": [
+          2000,
+          4000
+        ],
+        "scheduler_gamma": 0.5,
+        "results_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/network_capacity/depth_T20_lr_1em03_ep_6000_w_128_d_3_tanh/results",
+        "log_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/network_capacity/depth_T20_lr_1em03_ep_6000_w_128_d_3_tanh/runs",
+        "checkpoint_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/network_capacity/depth_T20_lr_1em03_ep_6000_w_128_d_3_tanh/models"
+      },
+      "summary": {
+        "train_one_step_rmse": 0.0005028847954235971,
+        "monitored_one_step_l2": 0.00011511964112287387,
+        "rollout_state_error_final": 0.0022144699469208717,
+        "max_rollout_state_error": 0.004014833830296993,
+        "energy_drift_final": 0.0024095773696899414,
+        "max_energy_drift": 0.0038673877716064453,
+        "symplectic_error": 4.6253204345703125e-05,
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "training_time_sec": 22.361853
+      }
+    },
+    {
+      "run_name": "depth_T20_lr_1em03_ep_6000_w_128_d_4_tanh",
+      "status": "completed",
+      "hidden_width": 128,
+      "hidden_depth": 4,
+      "activation": "Tanh",
+      "layers": [
+        2,
+        128,
+        128,
+        128,
+        128,
+        6
+      ],
+      "config": {
+        "run_name": "depth_T20_lr_1em03_ep_6000_w_128_d_4_tanh",
+        "seed": 2026,
+        "device": "cpu",
+        "dt": 0.2,
+        "stages": 3,
+        "method": "gauss-legendre",
+        "num_epochs": 6000,
+        "learning_rate": 0.001,
+        "train_data_size": 512,
+        "sample_mode": "uniform",
+        "loss_weights": {
+          "StageDynamics": 1.0,
+          "InitialOrData": 2.0
+        },
+        "layers": [
+          2,
+          128,
+          128,
+          128,
+          128,
+          6
+        ],
+        "activation": "Tanh",
+        "monitor_state": [
+          1.7,
+          0.0
+        ],
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "requested_rollout_total_time": 20.0,
+        "log_freq": 100,
+        "history_freq": 100,
+        "checkpoint_freq": 1000,
+        "scheduler_name": "MultiStepLR",
+        "scheduler_milestones": [
+          2000,
+          4000
+        ],
+        "scheduler_gamma": 0.5,
+        "results_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/network_capacity/depth_T20_lr_1em03_ep_6000_w_128_d_4_tanh/results",
+        "log_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/network_capacity/depth_T20_lr_1em03_ep_6000_w_128_d_4_tanh/runs",
+        "checkpoint_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/network_capacity/depth_T20_lr_1em03_ep_6000_w_128_d_4_tanh/models"
+      },
+      "summary": {
+        "train_one_step_rmse": 0.00056785176275298,
+        "monitored_one_step_l2": 7.773164543323219e-05,
+        "rollout_state_error_final": 0.09351862967014313,
+        "max_rollout_state_error": 0.09351862967014313,
+        "energy_drift_final": 0.024403929710388184,
+        "max_energy_drift": 0.024403929710388184,
+        "symplectic_error": 0.00018662214279174805,
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "training_time_sec": 24.455453
+      }
+    },
+    {
+      "run_name": "depth_T20_lr_1em03_ep_6000_w_128_d_5_tanh",
+      "status": "completed",
+      "hidden_width": 128,
+      "hidden_depth": 5,
+      "activation": "Tanh",
+      "layers": [
+        2,
+        128,
+        128,
+        128,
+        128,
+        128,
+        6
+      ],
+      "config": {
+        "run_name": "depth_T20_lr_1em03_ep_6000_w_128_d_5_tanh",
+        "seed": 2026,
+        "device": "cpu",
+        "dt": 0.2,
+        "stages": 3,
+        "method": "gauss-legendre",
+        "num_epochs": 6000,
+        "learning_rate": 0.001,
+        "train_data_size": 512,
+        "sample_mode": "uniform",
+        "loss_weights": {
+          "StageDynamics": 1.0,
+          "InitialOrData": 2.0
+        },
+        "layers": [
+          2,
+          128,
+          128,
+          128,
+          128,
+          128,
+          6
+        ],
+        "activation": "Tanh",
+        "monitor_state": [
+          1.7,
+          0.0
+        ],
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "requested_rollout_total_time": 20.0,
+        "log_freq": 100,
+        "history_freq": 100,
+        "checkpoint_freq": 1000,
+        "scheduler_name": "MultiStepLR",
+        "scheduler_milestones": [
+          2000,
+          4000
+        ],
+        "scheduler_gamma": 0.5,
+        "results_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/network_capacity/depth_T20_lr_1em03_ep_6000_w_128_d_5_tanh/results",
+        "log_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/network_capacity/depth_T20_lr_1em03_ep_6000_w_128_d_5_tanh/runs",
+        "checkpoint_dir": "/Users/hpray/ai4plasma/app/piml/SRKPINN/experiment/network_capacity/depth_T20_lr_1em03_ep_6000_w_128_d_5_tanh/models"
+      },
+      "summary": {
+        "train_one_step_rmse": 0.00043097930029034615,
+        "monitored_one_step_l2": 0.00028645203565247357,
+        "rollout_state_error_final": 0.04551700875163078,
+        "max_rollout_state_error": 0.04551700875163078,
+        "energy_drift_final": 0.013661026954650879,
+        "max_energy_drift": 0.013661026954650879,
+        "symplectic_error": 0.00019407272338867188,
+        "num_rollout_steps": 100,
+        "rollout_total_time": 20.0,
+        "training_time_sec": 26.562712
+      }
+    }
+  ]
+}

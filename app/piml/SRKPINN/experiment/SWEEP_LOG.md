@@ -85,3 +85,91 @@ Hold the best discretization and data-coverage settings fixed while scanning los
 - Best coarse loss-weight setting on seed `2026`: `StageDynamics=1.0`, `InitialOrData=2.0`.
 - `StageDynamics=1.0`, `InitialOrData=1.0` reduced energy drift, but worsened rollout error relative to the best pair.
 - Overweighting data (`1.0/5.0`) or underweighting stage dynamics (`0.5/2.0`) both caused clear long-rollout regressions.
+
+## Optimization Sweep (`dt=0.2`, `stages=3`, `train_data_size=512`, `sample_mode=uniform`, `loss=1.0/2.0`, `T_eval=20`)
+
+Hold the best settings from the first three sweep blocks fixed while scanning optimization parameters.
+
+| run_id | status | seed | lr | epochs | scheduler | rollout_steps | rollout_time | train_one_step_rmse | rollout_err_final | max_rollout_err | energy_drift_final | max_energy_drift | symplectic_err | artifacts |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `opt_T20_lr_3em04_ep_6000_multisteplr` | `completed` | `2026` | `3e-4` | `6000` | `MultiStepLR milestones=[2000,4000], gamma=0.5` | `100` | `20.0` | `1.002758e-03` | `4.904904e-03` | `1.136551e-02` | `5.658269e-03` | `7.202148e-03` | `1.558065e-04` | `app/piml/SRKPINN/experiment/optimization/opt_T20_lr_3em04_ep_6000_multisteplr/` |
+| `opt_T20_lr_1em03_ep_6000_multisteplr` | `completed` | `2026` | `1e-3` | `6000` | `MultiStepLR milestones=[2000,4000], gamma=0.5` | `100` | `20.0` | `5.028848e-04` | `2.214470e-03` | `4.014834e-03` | `2.409577e-03` | `3.867388e-03` | `4.625320e-05` | `app/piml/SRKPINN/experiment/optimization/opt_T20_lr_1em03_ep_6000_multisteplr/` |
+| `opt_T20_lr_3em03_ep_6000_multisteplr` | `completed` | `2026` | `3e-3` | `6000` | `MultiStepLR milestones=[2000,4000], gamma=0.5` | `100` | `20.0` | `2.429325e-03` | `5.129830e-01` | `5.129830e-01` | `1.353902e-01` | `1.353902e-01` | `2.056360e-04` | `app/piml/SRKPINN/experiment/optimization/opt_T20_lr_3em03_ep_6000_multisteplr/` |
+
+### Optimization Notes
+
+- Planned first pass: compare `learning_rate in {3e-4, 1e-3, 3e-3}` at `num_epochs=6000`.
+- Keep `MultiStepLR milestones=[2000,4000], gamma=0.5` fixed for the first pass.
+- First pass result on seed `2026`: `lr=1e-3` remains the best setting at `6000` epochs.
+- `lr=3e-4` converged smoothly but did not beat `1e-3` on rollout error or energy drift, so an epoch extension is not yet justified.
+- `lr=3e-3` is clearly too aggressive for this setup and should be excluded from later scheduler comparisons.
+- Next step: keep `lr=1e-3` fixed and compare scheduler choices, starting with `none` versus `MultiStepLR` variants.
+
+## Scheduler Sweep (`dt=0.2`, `stages=3`, `train_data_size=512`, `sample_mode=uniform`, `loss=1.0/2.0`, `lr=1e-3`, `epochs=6000`, `T_eval=20`)
+
+Hold the best learning rate fixed while comparing scheduler choices.
+
+| run_id | status | seed | scheduler | rollout_steps | rollout_time | train_one_step_rmse | rollout_err_final | max_rollout_err | energy_drift_final | max_energy_drift | symplectic_err | artifacts |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `sched_T20_lr_1em03_ep_6000_none` | `completed` | `2026` | `none` | `100` | `20.0` | `1.593060e-03` | `3.448007e-01` | `3.448007e-01` | `1.108930e-01` | `1.108930e-01` | `1.848340e-04` | `app/piml/SRKPINN/experiment/optimization/sched_T20_lr_1em03_ep_6000_none/` |
+| `sched_T20_lr_1em03_ep_6000_multisteplr_ms_2000_4000_g_0p5` | `completed` | `2026` | `MultiStepLR milestones=[2000,4000], gamma=0.5` | `100` | `20.0` | `5.028848e-04` | `2.214470e-03` | `4.014834e-03` | `2.409577e-03` | `3.867388e-03` | `4.625320e-05` | `app/piml/SRKPINN/experiment/optimization/sched_T20_lr_1em03_ep_6000_multisteplr_ms_2000_4000_g_0p5/` |
+| `sched_T20_lr_1em03_ep_6000_multisteplr_ms_3000_5000_g_0p5` | `completed` | `2026` | `MultiStepLR milestones=[3000,5000], gamma=0.5` | `100` | `20.0` | `4.531003e-04` | `3.548978e-03` | `5.375472e-03` | `7.886887e-04` | `2.259731e-03` | `3.159046e-05` | `app/piml/SRKPINN/experiment/optimization/sched_T20_lr_1em03_ep_6000_multisteplr_ms_3000_5000_g_0p5/` |
+| `sched_T20_lr_1em03_ep_6000_multisteplr_ms_1500_3000_4500_g_0p5` | `completed` | `2026` | `MultiStepLR milestones=[1500,3000,4500], gamma=0.5` | `100` | `20.0` | `6.510011e-04` | `3.488601e-03` | `6.418322e-03` | `4.249096e-03` | `5.326271e-03` | `1.049042e-05` | `app/piml/SRKPINN/experiment/optimization/sched_T20_lr_1em03_ep_6000_multisteplr_ms_1500_3000_4500_g_0p5/` |
+| `sched_T20_lr_1em03_ep_6000_multisteplr_ms_2000_4000_g_0p1` | `completed` | `2026` | `MultiStepLR milestones=[2000,4000], gamma=0.1` | `100` | `20.0` | `1.001879e-03` | `7.565309e-03` | `1.354829e-02` | `4.773140e-03` | `5.630016e-03` | `2.026558e-06` | `app/piml/SRKPINN/experiment/optimization/sched_T20_lr_1em03_ep_6000_multisteplr_ms_2000_4000_g_0p1/` |
+
+### Scheduler Notes
+
+- Ranking rule: compare `rollout_err_final` first, then `max_energy_drift`, then `train_one_step_rmse`.
+- Best coarse scheduler on seed `2026`: `MultiStepLR milestones=[2000,4000], gamma=0.5`.
+- `none` was clearly unstable in long rollout and should be excluded from later comparisons.
+- `MultiStepLR milestones=[3000,5000], gamma=0.5` improved energy drift and one-step RMSE, but its rollout error remained worse than the baseline schedule.
+- No scheduler variant beat the current baseline, so the next main sweep should move to network capacity.
+
+## Width Sweep (`dt=0.2`, `stages=3`, `train_data_size=512`, `sample_mode=uniform`, `loss=1.0/2.0`, `lr=1e-3`, `scheduler=MultiStepLR[2000,4000], gamma=0.5`, `depth=3`, `activation=Tanh`, `T_eval=20`)
+
+Hold the best optimization settings fixed while comparing hidden width.
+
+| run_id | status | seed | width | layers | rollout_steps | rollout_time | train_one_step_rmse | rollout_err_final | max_rollout_err | energy_drift_final | max_energy_drift | symplectic_err | artifacts |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `width_T20_lr_1em03_ep_6000_w_64_d_3_tanh` | `completed` | `2026` | `64` | `[2, 64, 64, 64, 6]` | `100` | `20.0` | `3.208517e-04` | `1.993498e-02` | `1.993498e-02` | `5.625248e-03` | `5.625248e-03` | `1.501441e-04` | `app/piml/SRKPINN/experiment/network_capacity/width_T20_lr_1em03_ep_6000_w_64_d_3_tanh/` |
+| `width_T20_lr_1em03_ep_6000_w_128_d_3_tanh` | `completed` | `2026` | `128` | `[2, 128, 128, 128, 6]` | `100` | `20.0` | `5.028848e-04` | `2.214470e-03` | `4.014834e-03` | `2.409577e-03` | `3.867388e-03` | `4.625320e-05` | `app/piml/SRKPINN/experiment/network_capacity/width_T20_lr_1em03_ep_6000_w_128_d_3_tanh/` |
+| `width_T20_lr_1em03_ep_6000_w_256_d_3_tanh` | `completed` | `2026` | `256` | `[2, 256, 256, 256, 6]` | `100` | `20.0` | `5.090443e-04` | `7.593290e-03` | `8.909126e-03` | `1.433611e-03` | `1.433611e-03` | `1.205206e-04` | `app/piml/SRKPINN/experiment/network_capacity/width_T20_lr_1em03_ep_6000_w_256_d_3_tanh/` |
+
+### Width Notes
+
+- Ranking rule: compare `rollout_err_final` first, then `max_energy_drift`, then `train_one_step_rmse`.
+- Best coarse width on seed `2026`: `128`.
+- `64` gave the best one-step RMSE, but its long-rollout error was much worse than `128`, indicating under-capacity for the rollout objective.
+- `256` improved energy drift, but the rollout error still regressed and runtime increased noticeably.
+
+## Depth Sweep (`dt=0.2`, `stages=3`, `train_data_size=512`, `sample_mode=uniform`, `loss=1.0/2.0`, `lr=1e-3`, `scheduler=MultiStepLR[2000,4000], gamma=0.5`, `width=128`, `activation=Tanh`, `T_eval=20`)
+
+Hold the best width fixed while comparing depth.
+
+| run_id | status | seed | depth | layers | rollout_steps | rollout_time | train_one_step_rmse | rollout_err_final | max_rollout_err | energy_drift_final | max_energy_drift | symplectic_err | artifacts |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `depth_T20_lr_1em03_ep_6000_w_128_d_3_tanh` | `completed` | `2026` | `3` | `[2, 128, 128, 128, 6]` | `100` | `20.0` | `5.028848e-04` | `2.214470e-03` | `4.014834e-03` | `2.409577e-03` | `3.867388e-03` | `4.625320e-05` | `app/piml/SRKPINN/experiment/network_capacity/depth_T20_lr_1em03_ep_6000_w_128_d_3_tanh/` |
+| `depth_T20_lr_1em03_ep_6000_w_128_d_4_tanh` | `completed` | `2026` | `4` | `[2, 128, 128, 128, 128, 6]` | `100` | `20.0` | `5.678518e-04` | `9.351863e-02` | `9.351863e-02` | `2.440393e-02` | `2.440393e-02` | `1.866221e-04` | `app/piml/SRKPINN/experiment/network_capacity/depth_T20_lr_1em03_ep_6000_w_128_d_4_tanh/` |
+| `depth_T20_lr_1em03_ep_6000_w_128_d_5_tanh` | `completed` | `2026` | `5` | `[2, 128, 128, 128, 128, 128, 6]` | `100` | `20.0` | `4.309793e-04` | `4.551701e-02` | `4.551701e-02` | `1.366103e-02` | `1.366103e-02` | `1.940727e-04` | `app/piml/SRKPINN/experiment/network_capacity/depth_T20_lr_1em03_ep_6000_w_128_d_5_tanh/` |
+
+### Depth Notes
+
+- Best coarse depth on seed `2026`: `3`.
+- Deeper networks reduced one-step RMSE in some cases, but both `4` and `5` layers caused severe long-rollout regressions.
+- For this problem, the deeper variants appear harder to train stably under the fixed optimization setup.
+
+## Activation Sweep (`dt=0.2`, `stages=3`, `train_data_size=512`, `sample_mode=uniform`, `loss=1.0/2.0`, `lr=1e-3`, `scheduler=MultiStepLR[2000,4000], gamma=0.5`, `width=128`, `depth=3`, `T_eval=20`)
+
+Hold the best width/depth pair fixed while comparing activation functions.
+
+| run_id | status | seed | activation | layers | rollout_steps | rollout_time | train_one_step_rmse | rollout_err_final | max_rollout_err | energy_drift_final | max_energy_drift | symplectic_err | artifacts |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `act_T20_lr_1em03_ep_6000_w_128_d_3_tanh` | `completed` | `2026` | `Tanh` | `[2, 128, 128, 128, 6]` | `100` | `20.0` | `5.028848e-04` | `2.214470e-03` | `4.014834e-03` | `2.409577e-03` | `3.867388e-03` | `4.625320e-05` | `app/piml/SRKPINN/experiment/network_capacity/act_T20_lr_1em03_ep_6000_w_128_d_3_tanh/` |
+| `act_T20_lr_1em03_ep_6000_w_128_d_3_silu` | `completed` | `2026` | `SiLU` | `[2, 128, 128, 128, 6]` | `100` | `20.0` | `4.236220e-04` | `5.743910e-02` | `5.743910e-02` | `1.459885e-02` | `1.459885e-02` | `1.357973e-03` | `app/piml/SRKPINN/experiment/network_capacity/act_T20_lr_1em03_ep_6000_w_128_d_3_silu/` |
+| `act_T20_lr_1em03_ep_6000_w_128_d_3_gelu` | `completed` | `2026` | `GELU` | `[2, 128, 128, 128, 6]` | `100` | `20.0` | `1.101870e-04` | `1.740040e-02` | `1.740040e-02` | `4.502773e-03` | `4.502773e-03` | `4.286170e-04` | `app/piml/SRKPINN/experiment/network_capacity/act_T20_lr_1em03_ep_6000_w_128_d_3_gelu/` |
+
+### Activation Notes
+
+- Best coarse activation on seed `2026`: `Tanh`.
+- `SiLU` and `GELU` both improved one-step RMSE, especially `GELU`, but neither improved the primary rollout metric.
+- For this SRKPINN setup, lower one-step error from smoother activations did not translate into better long-rollout stability.

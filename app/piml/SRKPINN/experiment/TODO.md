@@ -63,9 +63,11 @@
 
 ## 5. Fourth Sweep: Optimization
 
-- [ ] Scan learning rate after the first three sweep blocks are settled.
+- [x] Add a dedicated optimization sweep entrypoint under `experiment/optimization`.
+- [x] Keep `dt=0.2`, `stages=3`, `method=gauss-legendre`, `train_data_size=512`, `sample_mode=uniform`, `StageDynamics=1.0`, `InitialOrData=2.0`, `T_eval=20` fixed for the initial optimization sweep.
+- [x] Scan learning rate after the first three sweep blocks are settled.
 - [ ] Extend epochs if a smaller learning rate is clearly more stable.
-- [ ] Compare scheduler settings only after learning rate is roughly in place.
+- [x] Compare scheduler settings only after learning rate is roughly in place.
 - [ ] Recommended coarse grid:
 
 | Parameter | Values |
@@ -73,11 +75,25 @@
 | `learning_rate` | `3e-4`, `1e-3`, `3e-3` |
 | `num_epochs` | `6000`, `10000`, `15000` |
 
+Notes from the first learning-rate pass (`6000` epochs, `MultiStepLR milestones=[2000,4000], gamma=0.5`):
+
+- `1e-3` remained the best setting on the ranking rule.
+- `3e-4` trained smoothly but did not beat `1e-3` on rollout error or energy drift, so an epoch extension is not yet justified.
+- `3e-3` was clearly unstable in long rollout, so the next step should focus on scheduler comparisons around `lr=1e-3`.
+
+Notes from the first scheduler pass (`lr=1e-3`, `6000` epochs):
+
+- `MultiStepLR milestones=[2000,4000], gamma=0.5` remained the best optimizer schedule on the ranking rule.
+- `none` caused a severe long-rollout regression and should not be used for this configuration.
+- A later decay schedule (`milestones=[3000,5000], gamma=0.5`) improved energy drift and one-step RMSE, but its rollout error was still worse than the current baseline.
+- No scheduler candidate created a clear case for longer training, so the next main block should move to network capacity.
+
 ## 6. Fifth Sweep: Network Capacity
 
-- [ ] Compare width before trying many deeper variants.
-- [ ] Compare activation function only after a reasonable width/depth is found.
-- [ ] Keep output dimension tied to `2 * stages`.
+- [x] Compare width before trying many deeper variants.
+- [x] Compare depth after width settles and before activation.
+- [x] Compare activation function only after a reasonable width/depth is found.
+- [x] Keep output dimension tied to `2 * stages`.
 - [ ] Recommended first pass:
 
 | Parameter | Values |
@@ -85,6 +101,13 @@
 | hidden width | `64`, `128`, `256` |
 | hidden depth | `3`, `4`, `5` layers |
 | activation | `Tanh`, `SiLU`, `GELU` |
+
+Notes from the first network-capacity pass (`lr=1e-3`, `6000` epochs, `MultiStepLR milestones=[2000,4000], gamma=0.5`):
+
+- Width sweep: `128` remained best on the ranking rule; `64` underfit long rollout, and `256` improved energy drift but worsened rollout error.
+- Depth sweep at width `128`: `3` layers remained best; `4` and `5` layers both caused severe long-rollout regressions.
+- Activation sweep at width `128`, depth `3`: `Tanh` remained best; `SiLU` and `GELU` both improved one-step RMSE but degraded rollout behavior.
+- No network-capacity variant beat the existing architecture `[2, 128, 128, 128, 6]` with `Tanh`.
 
 ## 7. Later Work
 
