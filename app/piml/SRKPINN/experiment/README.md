@@ -6,6 +6,8 @@ This directory is the working area for the pendulum SRKPINN experiments.
 
 - `TODO.md`: ordered checklist for the sweep plan.
 - `SWEEP_LOG.md`: run registry for baseline and later parameter scans.
+- `PENDULUM_SWEEP_FULL_REPORT.md`: consolidated full report with figures, model details, and per-block results.
+- `PENDULUM_SWEEP_FULL_REPORT_CN.md`: Chinese version of the consolidated full report.
 - `baseline/`: isolated baseline run entrypoint and artifacts.
 - `time_discretization/`: first sweep block over `dt` and `stages`.
 - `data_coverage/`: second sweep block over `train_data_size` and `sample_mode`.
